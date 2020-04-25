@@ -4,9 +4,13 @@ let fft;
 let mic;
 let sizeX;
 let center = 0;
-let binSize = 1024;
+let binSize = 512;
 let spectrum;
-let spuctrumAverages;
+let spectrumAverages;
+let logAverages;
+let octaveBands;
+let buttonSong;
+let buttonMic;
 
 let circleCenterRadius;
 
@@ -20,35 +24,57 @@ let p = new PoissonDiskSampling({
 let points = p.fill();
 
 function preload() {
-  // song = loadSound("mp3/shineon.mp3");
+  song = loadSound("mp3/shineon.mp3");
   song = loadSound("mp3/dmutr.mp3");
+}
+
+function switchToSong() {
+  console.log("SONG");
+  mic.stop();
+  song.play();
+  fft.setInput(song);
+}
+
+function switchToMic() {
+  console.log("MIC");
+  song.stop();
+  mic.start();
+  fft.setInput(mic);
 }
 
 function setup() {
   canvas = createCanvas(window.innerWidth, window.innerHeight);
-  // song.play();
   // Microphone input
-  // cnv.mousePressed(userStartAudio);
   mic = new p5.AudioIn();
-  mic.start();
   // FFT
-  fft = new p5.FFT();
-  fft.smooth(0.9);
-  fft.setInput(mic);
+  fft = new p5.FFT(0.0, binSize);
+  fft.smooth(0.5);
   sizeX = width / binSize;
+  octaveBands = fft.getOctaveBands(1);
+
+  buttonSong = createButton("Song");
+  buttonSong.position(50, 50);
+  buttonSong.mousePressed(switchToSong);
+
+  buttonMic = createButton("Mic");
+  buttonMic.position(50, 80);
+  buttonMic.mousePressed(switchToMic);
 }
 
 function draw() {
   // Breathing
-  let time = frameCount / 30.0;
-  let breathe = 0.3 + (sin(time) * cos(time) + 1.0) / 2.0 / 2.0;
-  let invBreathe = 0.3 + (1.0 - (sin(time) * cos(time) + 1.0) / 2.0) / 2.0;
+
+  let time = frameCount / 15.0;
+  let breathe = 0.75 + (sin(time) * cos(time) + 1.0) / 3.0;
+  let invBreathe = 0.75 + (1.0 - (sin(time) * cos(time) + 1.0) / 2.0) * 10.0;
 
   // FFT
   spectrum = fft.analyze();
-  spectrumAverages = fft.linAverages(binSize);
+  spectrumAverages = fft.linAverages();
+  var spectrumAveragesRev = spectrumAverages.slice().reverse();
+  spectrumAverages = spectrumAverages.concat(spectrumAveragesRev);
   center = fft.getEnergy("bass");
-  circleCenterRadius = map(pow(center, 2), 0, 255 * 255, 10, 100);
+  circleCenterRadius = map(pow(center, 2), 0, 255 * 255, 5, 30);
 
   background(255);
 
@@ -56,20 +82,21 @@ function draw() {
   // fill(0);
   // textAlign(LEFT);
   // text(`Frame: ${frameCount}`, 100, 100);
-  // text(`Spectrum Bin Count: ${spectrum.length}`, 100, 120);
+  // text(`Spectrum Bin Count: ${spectrum.length * 2}`, 100, 120);
 
   // noFill();
   // stroke(0);
   // textAlign(CENTER);
   // let baseHeight = 10;
-  // for (var i = 0; i < spectrum.length; i++) {
+  // for (var i = 0; i < spectrum.length * 2; i++) {
   //   var amp = spectrum[i];
   //   var y = map(amp, 0, 256, 0, height / 2);
   //   rect(i * sizeX, height - y - baseHeight, sizeX, baseHeight + y);
   // }
+  //// Debugging
 
   translate(width / 2, height / 2);
-  var waveRadius = 70;
+  var waveRadius = 50;
   var radius = breathe * waveRadius;
   for (var p = 0; p < points.length; p++) {
     var point = points[p];
@@ -84,8 +111,11 @@ function draw() {
     //   vizRadius * sin(angle)
     // );
 
-    let spectralIndex = Math.floor(((angle + PI) / TWO_PI) * spectrum.length);
-    var energy = (spectrum[spectralIndex] / 100) * waveRadius;
+    let spectralIndex = Math.floor(
+      ((((angle + time) % PI) + PI) / TWO_PI) * spectrumAverages.length
+    );
+    var amp = spectrumAverages[spectralIndex] / 255;
+    var energy = waveRadius * amp + amp * 50.0;
 
     var distance = dist(poissonWidth / 2, poissonWidth / 2, point[0], point[1]);
     if (distance > 200 || distance < circleCenterRadius) continue;
