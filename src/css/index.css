@@ -3,3 +3,9 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.logo {
+    position: absolute;
+    left: calc(50% - 94px);
+    top: calc(50% - 22px);
+}

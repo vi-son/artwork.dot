@@ -11,6 +11,7 @@ let logAverages;
 let octaveBands;
 let buttonSong;
 let buttonMic;
+let brandcolor;
 
 let circleCenterRadius;
 
@@ -44,6 +45,7 @@ function switchToMic() {
 
 function setup() {
   canvas = createCanvas(window.innerWidth, window.innerHeight);
+  brandColor = color(50, 48, 69);
   // Microphone input
   mic = new p5.AudioIn();
   // FFT
@@ -63,7 +65,6 @@ function setup() {
 
 function draw() {
   // Breathing
-
   let time = frameCount / 15.0;
   let breathe = 0.75 + (sin(time) * cos(time) + 1.0) / 3.0;
   let invBreathe = 0.75 + (1.0 - (sin(time) * cos(time) + 1.0) / 2.0) * 10.0;
@@ -144,7 +145,7 @@ function draw() {
       0,
       5
     );
-    fill(255 - circleRadius * 255);
+    fill(lerpColor(brandColor, color("white"), 255 - circleRadius * 255));
     circle(
       point[0] - poissonWidth / 2,
       point[1] - poissonWidth / 2,
@@ -153,7 +154,7 @@ function draw() {
   }
 
   noStroke();
-  fill(0);
+  fill(brandColor);
   circle(0, 0, invBreathe + circleCenterRadius);
 }
 
