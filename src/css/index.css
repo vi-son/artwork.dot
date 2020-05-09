@@ -9,3 +9,22 @@ body {
     left: calc(50% - 94px);
     top: calc(50% - 22px);
 }
+
+.buttons {
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  border: 0;
+  background: black;
+  color: white;
+  font-family: monospace;
+  padding: 20px;
+  font-size: 16px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}

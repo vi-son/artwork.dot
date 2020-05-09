@@ -4,7 +4,7 @@ let fft;
 let mic;
 let sizeX;
 let center = 0;
-let binSize = 512;
+let binSize = 64;
 let spectrum;
 let spectrumAverages;
 let logAverages;
@@ -28,19 +28,18 @@ function preload() {
   const wrapper = document.querySelector("#logo-canvas-wrapper");
   const songURL = wrapper.getAttribute("data-song");
   song = loadSound(songURL);
-  console.log(song);
 }
 
 function switchToSong() {
-  console.log("SONG");
-  mic.stop();
+  if (mic !== null) mic.stop();
   song.play();
   fft.setInput(song);
 }
 
 function switchToMic() {
-  console.log("MIC");
-  song.stop();
+  // Microphone input
+  if (song !== null) song.stop();
+  mic = new p5.AudioIn();
   mic.start();
   fft.setInput(mic);
 }
@@ -49,21 +48,20 @@ function setup() {
   canvas = createCanvas(window.innerWidth, window.innerHeight);
   canvas.parent("logo-canvas-wrapper");
   brandColor = color(50, 48, 69);
-  // Microphone input
-  mic = new p5.AudioIn();
   // FFT
   fft = new p5.FFT(0.0, binSize);
   fft.smooth(0.5);
   sizeX = width / binSize;
   octaveBands = fft.getOctaveBands(1);
 
-  buttonSong = createButton("Song");
-  buttonSong.position(50, 50);
-  buttonSong.mousePressed(switchToSong);
-
-  buttonMic = createButton("Mic");
-  buttonMic.position(50, 80);
-  buttonMic.mousePressed(switchToMic);
+  const buttonSong = document.querySelector("#button-song");
+  buttonSong.addEventListener("click", () => {
+    switchToSong();
+  });
+  const buttonMic = document.querySelector("#button-mic");
+  buttonMic.addEventListener("click", () => {
+    switchToMic();
+  });
 }
 
 function draw() {
