@@ -78,7 +78,7 @@ function draw() {
   center = fft.getEnergy("bass");
   circleCenterRadius = map(pow(center, 2), 0, 255 * 255, 5, 30);
 
-  background(255);
+  background(241, 239, 238);
 
   //// Debugging
   // fill(0);
@@ -97,7 +97,7 @@ function draw() {
   // }
   //// Debugging
 
-  translate(width / 2, height / 2);
+  translate(width / 2 - 50, height / 2);
   var waveRadius = 50;
   var radius = breathe * waveRadius;
   for (var p = 0; p < points.length; p++) {
@@ -146,7 +146,7 @@ function draw() {
       0,
       5
     );
-    fill(lerpColor(brandColor, color("white"), 255 - circleRadius * 255));
+    fill(lerpColor(brandColor, color(241, 239, 238), 255 - circleRadius * 255));
     circle(
       point[0] - poissonWidth / 2,
       point[1] - poissonWidth / 2,
