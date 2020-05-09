@@ -25,8 +25,10 @@ let p = new PoissonDiskSampling({
 let points = p.fill();
 
 function preload() {
-  song = loadSound("mp3/shineon.mp3");
-  song = loadSound("mp3/dmutr.mp3");
+  const wrapper = document.querySelector("#logo-canvas-wrapper");
+  const songURL = wrapper.getAttribute("data-song");
+  song = loadSound(songURL);
+  console.log(song);
 }
 
 function switchToSong() {
@@ -45,6 +47,7 @@ function switchToMic() {
 
 function setup() {
   canvas = createCanvas(window.innerWidth, window.innerHeight);
+  canvas.parent("logo-canvas-wrapper");
   brandColor = color(50, 48, 69);
   // Microphone input
   mic = new p5.AudioIn();
