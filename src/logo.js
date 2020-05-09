@@ -31,7 +31,7 @@ function preload() {
 }
 
 function switchToSong() {
-  if (mic !== null) mic.stop();
+  if (mic !== undefined) mic.stop();
   song.play();
   fft.setInput(song);
 }
