@@ -12,6 +12,8 @@ let octaveBands;
 let buttonSong;
 let buttonMic;
 let brandcolor;
+let backgroundColor;
+let fadeIn = 0;
 
 let circleCenterRadius;
 
@@ -27,7 +29,12 @@ let points = p.fill();
 function preload() {
   const wrapper = document.querySelector("#logo-canvas-wrapper");
   const songURL = wrapper.getAttribute("data-song");
-  song = loadSound(songURL);
+  if (songURL === "") {
+    const buttonSong = document.querySelector("#button-song");
+    buttonSong.style.display = "none";
+  } else {
+    song = loadSound(songURL);
+  }
 }
 
 function switchToSong() {
@@ -38,16 +45,18 @@ function switchToSong() {
 
 function switchToMic() {
   // Microphone input
-  if (song !== null) song.stop();
+  if (song !== undefined) song.stop();
   mic = new p5.AudioIn();
   mic.start();
   fft.setInput(mic);
 }
 
 function setup() {
-  canvas = createCanvas(window.innerWidth, window.innerHeight);
+  canvas = createCanvas(window.innerWidth, 800);
   canvas.parent("logo-canvas-wrapper");
   brandColor = color(50, 48, 69);
+  backgroundColor = color(241, 239, 238);
+
   // FFT
   fft = new p5.FFT(0.0, binSize);
   fft.smooth(0.5);
@@ -55,16 +64,23 @@ function setup() {
   octaveBands = fft.getOctaveBands(1);
 
   const buttonSong = document.querySelector("#button-song");
-  buttonSong.addEventListener("click", () => {
+  buttonSong.addEventListener("click", e => {
+    buttonMic.className = "button";
+    buttonSong.className = "button active";
     switchToSong();
   });
   const buttonMic = document.querySelector("#button-mic");
-  buttonMic.addEventListener("click", () => {
+  buttonMic.addEventListener("click", e => {
+    buttonSong.className = "button";
+    buttonMic.className = "button active";
     switchToMic();
   });
 }
 
 function draw() {
+  // Fade in
+  fadeIn = map(frameCount, 0, 60, 0.0, 1.0);
+  var dotColor = lerpColor(backgroundColor, brandColor, fadeIn);
   // Breathing
   let time = frameCount / 15.0;
   let breathe = 0.75 + (sin(time) * cos(time) + 1.0) / 3.0;
@@ -78,7 +94,7 @@ function draw() {
   center = fft.getEnergy("bass");
   circleCenterRadius = map(pow(center, 2), 0, 255 * 255, 5, 30);
 
-  background(241, 239, 238);
+  background(backgroundColor);
 
   //// Debugging
   // fill(0);
@@ -97,7 +113,7 @@ function draw() {
   // }
   //// Debugging
 
-  translate(width / 2 - 50, height / 2);
+  translate(width / 2 - 20, height / 2 - 40);
   var waveRadius = 50;
   var radius = breathe * waveRadius;
   for (var p = 0; p < points.length; p++) {
@@ -146,7 +162,7 @@ function draw() {
       0,
       5
     );
-    fill(lerpColor(brandColor, color(241, 239, 238), 255 - circleRadius * 255));
+    fill(lerpColor(dotColor, color(241, 239, 238), 255 - circleRadius * 255));
     circle(
       point[0] - poissonWidth / 2,
       point[1] - poissonWidth / 2,
@@ -155,10 +171,6 @@ function draw() {
   }
 
   noStroke();
-  fill(brandColor);
+  fill(dotColor);
   circle(0, 0, invBreathe + circleCenterRadius);
 }
-
-// function keyReleased() {
-//   saveCanvas(canvas, new Date().toISOString(), "png");
-// }
