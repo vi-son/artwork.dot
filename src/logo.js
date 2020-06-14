@@ -85,6 +85,8 @@ function setup() {
     buttonMic.className = "button active";
     switchToMic();
   });
+  document.querySelector(".buttons").style.display = "flex";
+  document.querySelector(".audio-permission").style.opacity = 1;
 }
 
 function draw() {
