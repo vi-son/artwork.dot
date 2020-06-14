@@ -7,6 +7,7 @@
     <link href="./css/index.css" rel="stylesheet"/>
 
     <script src="./p5/p5.min.js"></script>
+    <script src="./p5/p5.svg.js"></script>
     <script src="./p5/p5.sound.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/kchapelier/poisson-disk-sampling@2.2.0/build/poisson-disk-sampling.min.js"></script>
     <script src="./logo.js"></script>
@@ -17,23 +18,23 @@
       <button class="button" id="button-mic">Mic</button>
     </div>
     <div id="logo-canvas-wrapper"
-         data-song="mp3/shineon.mp3"></div>
-    <svg class="logo" width="278px" height="55px" viewBox="0 0 278 55" version="1.1" xmlns="http://www.w3.org/2000/svg">
-      <g id="Logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="02/H3-Copy" transform="translate(-170.000000, -173.000000)" stroke="#323045">
-          <g id="Group" transform="translate(173.000000, 175.000000)">
-            <circle id="Oval-Copy-3" stroke-width="6" fill="#323045" cx="187.5" cy="26" r="22"></circle>
-            <polyline id="N" stroke-width="6" stroke-linejoin="bevel" fill-rule="nonzero" transform="translate(250.500000, 26.500000) scale(-1, 1) translate(-250.500000, -26.500000) " points="272 50 272 3 229.078324 50 229 3"></polyline>
-            <polygon id="Path-8" stroke-width="3" fill="#323045" stroke-linejoin="bevel" points="270 46.2772636 252 27 270 4"></polygon>
-            <path d="M145,6.02680448 C142.66341,4.14816787 139.537315,3 136.102529,3 C128.866202,3 123,8.09615364 123,14.3825777 C123,20.6690018 130.585675,23.2690602 134.049218,25" id="Path" stroke-width="6" fill="#323045" stroke-linecap="square" stroke-linejoin="round"></path>
-            <path d="M123,44.4670575 C125.345596,47.2237407 129.029046,49 133.170933,49 C140.256231,49 146,43.8021219 146,37.3902144 C146,30.9783068 140.107807,27.8913114 133.861332,25" id="Path" stroke-width="6" fill="#323045" stroke-linecap="square" stroke-linejoin="round"></path>
-            <line x1="123.5" y1="41.453125" x2="145.5" y2="7.546875" id="Path-7" stroke-width="3" fill="#323045" stroke-linecap="round" stroke-linejoin="round"></line>
-            <polyline id="Path" stroke-width="6" transform="translate(26.500000, 23.338131) scale(1, -1) translate(-26.500000, -23.338131) " points="0 44.6762625 26 2.66215118e-13 53 46.6762625"></polyline>
-            <polyline id="Path-7" stroke-width="3" fill="#323045" stroke-linecap="round" stroke-linejoin="round" points="2.5 3 26 44 40.5 19.5 2.5 2.5"></polyline>
-            <path d="M55.5,0 C55.5,40.1743301 55.5,57.0701487 55.5,50.6874557" id="Path-6" stroke-width="6" stroke-linejoin="bevel"></path>
-          </g>
-        </g>
-      </g>
-    </svg>
+         data-song="mp3/dmutr.mp3"></div>
+    <!-- <svg class="logo" width="278px" height="55px" viewBox="0 0 278 55" version="1.1" xmlns="http://www.w3.org/2000/svg"> -->
+    <!--   <g id="Logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> -->
+    <!--     <g id="02/H3-Copy" transform="translate(-170.000000, -173.000000)" stroke="#323045"> -->
+    <!--       <g id="Group" transform="translate(173.000000, 175.000000)"> -->
+    <!--         <circle id="Oval-Copy-3" stroke-width="6" fill="#323045" cx="187.5" cy="26" r="22"></circle> -->
+    <!--         <polyline id="N" stroke-width="6" stroke-linejoin="bevel" fill-rule="nonzero" transform="translate(250.500000, 26.500000) scale(-1, 1) translate(-250.500000, -26.500000) " points="272 50 272 3 229.078324 50 229 3"></polyline> -->
+    <!--         <polygon id="Path-8" stroke-width="3" fill="#323045" stroke-linejoin="bevel" points="270 46.2772636 252 27 270 4"></polygon> -->
+    <!--         <path d="M145,6.02680448 C142.66341,4.14816787 139.537315,3 136.102529,3 C128.866202,3 123,8.09615364 123,14.3825777 C123,20.6690018 130.585675,23.2690602 134.049218,25" id="Path" stroke-width="6" fill="#323045" stroke-linecap="square" stroke-linejoin="round"></path> -->
+    <!--         <path d="M123,44.4670575 C125.345596,47.2237407 129.029046,49 133.170933,49 C140.256231,49 146,43.8021219 146,37.3902144 C146,30.9783068 140.107807,27.8913114 133.861332,25" id="Path" stroke-width="6" fill="#323045" stroke-linecap="square" stroke-linejoin="round"></path> -->
+    <!--         <line x1="123.5" y1="41.453125" x2="145.5" y2="7.546875" id="Path-7" stroke-width="3" fill="#323045" stroke-linecap="round" stroke-linejoin="round"></line> -->
+    <!--         <polyline id="Path" stroke-width="6" transform="translate(26.500000, 23.338131) scale(1, -1) translate(-26.500000, -23.338131) " points="0 44.6762625 26 2.66215118e-13 53 46.6762625"></polyline> -->
+    <!--         <polyline id="Path-7" stroke-width="3" fill="#323045" stroke-linecap="round" stroke-linejoin="round" points="2.5 3 26 44 40.5 19.5 2.5 2.5"></polyline> -->
+    <!--         <path d="M55.5,0 C55.5,40.1743301 55.5,57.0701487 55.5,50.6874557" id="Path-6" stroke-width="6" stroke-linejoin="bevel"></path> -->
+    <!--       </g> -->
+    <!--     </g> -->
+    <!--   </g> -->
+    <!-- </svg> -->
   </body>
 </html>
