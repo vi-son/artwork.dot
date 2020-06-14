@@ -66,12 +66,20 @@ function setup() {
   octaveBands = fft.getOctaveBands(1);
 
   const buttonSong = document.querySelector("#button-song");
+  const buttonSongCookie = document.querySelector("#cookie-button-song");
+  buttonSongCookie.addEventListener("click", e => {
+    switchToSong();
+  });
   buttonSong.addEventListener("click", e => {
     buttonMic.className = "button";
     buttonSong.className = "button active";
     switchToSong();
   });
   const buttonMic = document.querySelector("#button-mic");
+  const buttonMicCookie = document.querySelector("#cookie-button-mic");
+  buttonMicCookie.addEventListener("click", e => {
+    switchToMic();
+  });
   buttonMic.addEventListener("click", e => {
     buttonSong.className = "button";
     buttonMic.className = "button active";
