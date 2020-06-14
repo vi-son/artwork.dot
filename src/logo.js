@@ -31,7 +31,9 @@ function preload() {
   const songURL = wrapper.getAttribute("data-song");
   if (songURL === "") {
     const buttonSong = document.querySelector("#button-song");
+    const buttonSongCookie = document.querySelector("#button-song-cookie");
     buttonSong.style.display = "none";
+    buttonSongCookie.style.display = "none";
   } else {
     song = loadSound(songURL);
   }
