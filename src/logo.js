@@ -38,7 +38,9 @@ function preload() {
   const songURL = wrapper.getAttribute("data-song");
   if (songURL === "") {
     const buttonSong = document.querySelector("#button-song");
+    const buttonSongCookie = document.querySelector("#button-song-cookie");
     buttonSong.style.display = "none";
+    buttonSongCookie.style.display = "none";
   } else {
     song = loadSound(songURL);
   }
@@ -73,17 +75,27 @@ function setup() {
   octaveBands = fft.getOctaveBands(1);
 
   const buttonSong = document.querySelector("#button-song");
+  const buttonSongCookie = document.querySelector("#cookie-button-song");
+  buttonSongCookie.addEventListener("click", e => {
+    switchToSong();
+  });
   buttonSong.addEventListener("click", e => {
     buttonMic.className = "button";
     buttonSong.className = "button active";
     switchToSong();
   });
   const buttonMic = document.querySelector("#button-mic");
+  const buttonMicCookie = document.querySelector("#cookie-button-mic");
+  buttonMicCookie.addEventListener("click", e => {
+    switchToMic();
+  });
   buttonMic.addEventListener("click", e => {
     buttonSong.className = "button";
     buttonMic.className = "button active";
     switchToMic();
   });
+  document.querySelector(".buttons").style.display = "flex";
+  document.querySelector(".audio-permission").style.opacity = 1;
 }
 
 function draw() {
