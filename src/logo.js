@@ -14,19 +14,24 @@ let buttonMic;
 let brandcolor;
 let backgroundColor;
 let fadeIn = 0;
-
 let circleCenterRadius;
+let innerRadius;
+let outerRadius;
+let points;
+let poissonWidth;
 
-let poissonWidth = 500;
-let innerRadius = 15;
-let outerRadius = innerRadius * 10;
-let p = new PoissonDiskSampling({
-  shape: [poissonWidth, poissonWidth],
-  minDistance: innerRadius,
-  maxDistance: outerRadius,
-  tries: 5
-});
-let points = p.fill();
+function setupParameters(radius = 15) {
+  poissonWidth = 500;
+  innerRadius = radius;
+  outerRadius = innerRadius * 10;
+  let p = new PoissonDiskSampling({
+    shape: [poissonWidth, poissonWidth],
+    minDistance: innerRadius,
+    maxDistance: outerRadius,
+    tries: 5
+  });
+  points = p.fill();
+}
 
 function preload() {
   const wrapper = document.querySelector("#logo-canvas-wrapper");
@@ -55,14 +60,15 @@ function switchToMic() {
 
 function setup() {
   frameRate(60);
-  canvas = createCanvas(window.innerWidth, 800);
+  canvas = createCanvas(900, 900);
   canvas.parent("logo-canvas-wrapper");
   brandColor = color(50, 48, 69);
   backgroundColor = color(241, 239, 238);
+  setupParameters(15);
 
   // FFT
   fft = new p5.FFT(0.0, binSize);
-  fft.smooth(0.8);
+  fft.smooth(0.5);
   sizeX = width / binSize;
   octaveBands = fft.getOctaveBands(1);
 
@@ -85,7 +91,7 @@ function draw() {
   fadeIn = 1.0; //map(frameCount, 0, 60, 0.0, 1.0);
   var dotColor = lerpColor(backgroundColor, brandColor, fadeIn);
   // Breathing
-  let time = frameCount / 15.0;
+  let time = frameCount / 30.0;
   let breathe = 0.75 + (sin(time) * cos(time) + 1.0) / 3.0;
   let invBreathe = 0.75 + (1.0 - (sin(time) * cos(time) + 1.0) / 2.0) * 10.0;
 
@@ -122,7 +128,7 @@ function draw() {
   // }
   //// Debugging
 
-  translate(width / 2 - 20, height / 2 - 40);
+  translate(width / 2, height / 2);
   var waveRadius = outerRadius;
   var radius = breathe * waveRadius;
   for (var p = 0; p < points.length; p++) {
@@ -182,8 +188,4 @@ function draw() {
   noStroke();
   fill(dotColor);
   circle(0, 0, invBreathe + circleCenterRadius);
-}
-
-function mousePressed() {
-  // saveFrames("out", "png", 1, 200);
 }

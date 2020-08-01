@@ -4,16 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx budo --ssl --dir src/ --wg '**/*.js' --live"
+    "start": "npx budo --dir src/ --wg '**/*.js' --live"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "budo": "^11.6.3"
+    "budo": "^11.6.4",
+    "ccapture.js": "^1.1.0"
   },
   "dependencies": {
-    "p5": "^1.0.0",
-    "poisson-disk-sampling": "^2.2.0"
+    "p5": "^1.1.9",
+    "poisson-disk-sampling": "^2.2.2"
   }
 }

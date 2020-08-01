@@ -2,6 +2,10 @@ html,
 body {
     margin: 0;
     padding: 0;
+    background: hsl(12, 10%, 94%);
+    width: 100vw;
+    height: 100vh;
+    font-family: Space Mono;
 }
 
 .logo {
@@ -10,12 +14,13 @@ body {
     top: calc(50% - 22px);
 }
 
-.buttons {
+.ui {
   position: fixed;
   top: 40px;
   left: 40px;
   display: flex;
   flex-direction: column;
+  z-index: 999;
 }
 
 .button {
@@ -27,4 +32,20 @@ body {
   font-size: 16px;
   margin-bottom: 2px;
   cursor: pointer;
+  border-radius: 4px;
+}
+
+.button:hover {
+    background: hsl(246, 100%, 54%);
+}
+
+label {
+    margin-top: 30px;
+}
+
+#logo-canvas-wrapper {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 10vw;
 }
