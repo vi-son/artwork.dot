@@ -62,11 +62,12 @@ function switchToMic() {
 
 function setup() {
   frameRate(60);
-  canvas = createCanvas(900, 900);
+  // canvas = createCanvas(900, 900);
+  canvas = createCanvas(window.innerWidth, 800);
   canvas.parent("logo-canvas-wrapper");
   brandColor = color(50, 48, 69);
   backgroundColor = color(241, 239, 238);
-  setupParameters(15);
+  setupParameters(8);
 
   // FFT
   fft = new p5.FFT(0.0, binSize);
@@ -140,7 +141,7 @@ function draw() {
   // }
   //// Debugging
 
-  translate(width / 2, height / 2);
+  translate(width / 2 - 20, height / 2 - 40);
   var waveRadius = outerRadius;
   var radius = breathe * waveRadius;
   for (var p = 0; p < points.length; p++) {
