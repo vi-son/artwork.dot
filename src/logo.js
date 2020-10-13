@@ -37,10 +37,10 @@ function preload() {
   const wrapper = document.querySelector("#logo-canvas-wrapper");
   const songURL = wrapper.getAttribute("data-song");
   if (songURL === "") {
-    const buttonSong = document.querySelector("#button-song");
-    const buttonSongCookie = document.querySelector("#button-song-cookie");
-    buttonSong.style.display = "none";
-    buttonSongCookie.style.display = "none";
+    // const buttonSong = document.querySelector("#button-song");
+    // const buttonSongCookie = document.querySelector("#button-song-cookie");
+    // buttonSong.style.display = "none";
+    // buttonSongCookie.style.display = "none";
   } else {
     song = loadSound(songURL);
   }
@@ -66,7 +66,7 @@ function setup() {
   canvas.parent("logo-canvas-wrapper");
   brandColor = color(50, 48, 69);
   backgroundColor = color(241, 239, 238);
-  setupParameters(15);
+  setupParameters(5);
 
   // FFT
   fft = new p5.FFT(0.0, binSize);
@@ -75,27 +75,27 @@ function setup() {
   octaveBands = fft.getOctaveBands(1);
 
   const buttonSong = document.querySelector("#button-song");
-  const buttonSongCookie = document.querySelector("#cookie-button-song");
-  buttonSongCookie.addEventListener("click", e => {
-    switchToSong();
-  });
+  // const buttonSongCookie = document.querySelector("#cookie-button-song");
+  // buttonSongCookie.addEventListener("click", e => {
+  //   switchToSong();
+  // });
   buttonSong.addEventListener("click", e => {
     buttonMic.className = "button";
     buttonSong.className = "button active";
     switchToSong();
   });
   const buttonMic = document.querySelector("#button-mic");
-  const buttonMicCookie = document.querySelector("#cookie-button-mic");
-  buttonMicCookie.addEventListener("click", e => {
-    switchToMic();
-  });
+  // const buttonMicCookie = document.querySelector("#cookie-button-mic");
+  // buttonMicCookie.addEventListener("click", e => {
+  //   switchToMic();
+  // });
   buttonMic.addEventListener("click", e => {
     buttonSong.className = "button";
     buttonMic.className = "button active";
     switchToMic();
   });
-  document.querySelector(".buttons").style.display = "flex";
-  document.querySelector(".audio-permission").style.opacity = 1;
+  // document.querySelector(".buttons").style.display = "flex";
+  // document.querySelector(".audio-permission").style.opacity = 1;
 }
 
 function draw() {
@@ -140,7 +140,7 @@ function draw() {
   // }
   //// Debugging
 
-  translate(width / 2, height / 2);
+  translate(width / 2 - 20, height / 2 - 40);
   var waveRadius = outerRadius;
   var radius = breathe * waveRadius;
   for (var p = 0; p < points.length; p++) {
