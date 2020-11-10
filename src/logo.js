@@ -4,7 +4,7 @@ let fft;
 let mic;
 let sizeX;
 let center = 0;
-let binSize = 32;
+let binSize = 1024;
 let spectrum;
 let spectrumAverages;
 let logAverages;
@@ -71,7 +71,7 @@ function setup() {
   // FFT
   fft = new p5.FFT(0.0, binSize);
   fft.smooth(0.5);
-  sizeX = width / binSize;
+  sizeX = width / 2 / binSize;
   octaveBands = fft.getOctaveBands(1);
 
   const buttonSong = document.querySelector("#button-song");
@@ -109,7 +109,7 @@ function draw() {
 
   // FFT
   spectrum = fft.analyze();
-  spectrumAverages = fft.linAverages();
+  spectrumAverages = fft.logAverages(octaveBands);
   var spectrumAveragesRev = spectrumAverages.slice().reverse();
   spectrumAverages = spectrumAverages.concat(spectrumAveragesRev);
   center = fft.getEnergy("bass");
@@ -124,20 +124,25 @@ function draw() {
   background(backgroundColor);
 
   //// Debugging
-  // fill(0);
-  // textAlign(LEFT);
-  // text(`Frame: ${frameCount}`, 100, 100);
-  // text(`Spectrum Bin Count: ${spectrum.length * 2}`, 100, 120);
+  fill(0);
+  textAlign(LEFT);
+  text(`Frame: ${frameCount}`, 100, 100);
+  text(`Spectrum Bin Count: ${spectrum.length * 2}`, 100, 120);
 
-  // noFill();
-  // stroke(0);
-  // textAlign(CENTER);
-  // let baseHeight = 10;
-  // for (var i = 0; i < spectrum.length * 2; i++) {
-  //   var amp = spectrum[i];
-  //   var y = map(amp, 0, 256, 0, height / 2);
-  //   rect(i * sizeX, height - y - baseHeight, sizeX, baseHeight + y);
-  // }
+  noFill();
+  stroke(0);
+  textAlign(CENTER);
+  let baseHeight = 10;
+  for (var i = 0; i < spectrum.length * 2; i++) {
+    var amp = spectrum[i];
+    var y = map(amp, 0, 256, 0, height / 2);
+    rect(
+      Math.log(i) * sizeX * (width / 5),
+      height - y - baseHeight,
+      sizeX * 10,
+      baseHeight + y
+    );
+  }
   //// Debugging
 
   translate(width / 2 - 20, height / 2 - 40);
