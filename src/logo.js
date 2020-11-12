@@ -62,15 +62,17 @@ function switchToMic() {
 
 function setup() {
   frameRate(60);
-  canvas = createCanvas(900, 900);
+  const wrapper = document.querySelector("#logo-canvas-wrapper");
+  const size = wrapper.getBoundingClientRect();
+  canvas = createCanvas(size.width, size.height);
   canvas.parent("logo-canvas-wrapper");
   brandColor = color(50, 48, 69);
   backgroundColor = color(241, 239, 238);
-  setupParameters(5);
+  setupParameters(10);
 
   // FFT
   fft = new p5.FFT(0.0, binSize);
-  fft.smooth(0.5);
+  fft.smooth(0.75);
   sizeX = width / 2 / binSize;
   octaveBands = fft.getOctaveBands(1);
 
@@ -104,7 +106,7 @@ function draw() {
   var dotColor = lerpColor(backgroundColor, brandColor, fadeIn);
   // Breathing
   let time = frameCount / 30.0;
-  let breathe = 0.75 + (sin(time) * cos(time) + 1.0) / 3.0;
+  let breathe = 0.65 + (sin(time) * cos(time) + 1.0) / 3.0;
   let invBreathe = 0.75 + (1.0 - (sin(time) * cos(time) + 1.0) / 2.0) * 10.0;
 
   // FFT
@@ -112,6 +114,7 @@ function draw() {
   spectrumAverages = fft.logAverages(octaveBands);
   var spectrumAveragesRev = spectrumAverages.slice().reverse();
   spectrumAverages = spectrumAverages.concat(spectrumAveragesRev);
+  console.log(spectrumAverages.length);
   center = fft.getEnergy("bass");
   circleCenterRadius = map(
     pow(center, 2),
@@ -124,28 +127,30 @@ function draw() {
   background(backgroundColor);
 
   //// Debugging
-  fill(0);
-  textAlign(LEFT);
-  text(`Frame: ${frameCount}`, 100, 100);
-  text(`Spectrum Bin Count: ${spectrum.length * 2}`, 100, 120);
+  // fill(0);
+  // textAlign(LEFT);
+  // text(`Frame: ${frameCount}`, 100, 100);
+  // text(`Spectrum Bin Count: ${spectrum.length * 2}`, 100, 120);
 
-  noFill();
-  stroke(0);
-  textAlign(CENTER);
-  let baseHeight = 10;
-  for (var i = 0; i < spectrum.length * 2; i++) {
-    var amp = spectrum[i];
-    var y = map(amp, 0, 256, 0, height / 2);
-    rect(
-      Math.log(i) * sizeX * (width / 5),
-      height - y - baseHeight,
-      sizeX * 10,
-      baseHeight + y
-    );
-  }
+  // noFill();
+  // stroke(0);
+  // textAlign(CENTER);
+  // let baseHeight = 10;
+  // for (var i = 0; i < spectrum.length * 2; i++) {
+  //   var amp = spectrum[i];
+  //   var y = map(amp, 0, 256, 0, height / 2);
+  //   rect(
+  //     Math.log(i) * sizeX * (width / 5),
+  //     height - y - baseHeight,
+  //     sizeX * 10,
+  //     baseHeight + y
+  //   );
+  // }
   //// Debugging
 
-  translate(width / 2 - 20, height / 2 - 40);
+  // float offsetX = 20;
+  // float offsetY = 40;
+  translate(width / 2, height / 2);
   var waveRadius = outerRadius;
   var radius = breathe * waveRadius;
   for (var p = 0; p < points.length; p++) {
@@ -164,8 +169,8 @@ function draw() {
     let spectralIndex = Math.floor(
       ((((angle + time) % PI) + PI) / TWO_PI) * spectrumAverages.length
     );
-    var amp = spectrumAverages[spectralIndex] / 255;
-    var energy = waveRadius * amp + amp * 50.0;
+    var amp = spectrumAverages[spectralIndex] / 512;
+    var energy = waveRadius * amp;
 
     var distance = dist(poissonWidth / 2, poissonWidth / 2, point[0], point[1]);
     if (distance > innerRadius * 40 || distance < circleCenterRadius) continue;
