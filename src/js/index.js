@@ -60,7 +60,7 @@ class App extends React.Component {
       canvas = p.createCanvas(size.width, size.height);
       canvas.parent("logo-canvas-wrapper");
       brandColor = p.color(50, 48, 69);
-      backgroundColor = p.color(241, 239, 238);
+      backgroundColor = p.color(221, 219, 218);
       setupParameters(10);
       // Analysis
       const binSize = 1024;
