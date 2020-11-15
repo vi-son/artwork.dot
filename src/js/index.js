@@ -13,7 +13,6 @@ class App extends React.Component {
   }
 
   Sketch(p) {
-    let song;
     let canvas;
     let brandColor;
     let backgroundColor;
@@ -36,8 +35,14 @@ class App extends React.Component {
 
     let octaveBands;
 
+    let song;
+
+    p.stopAudio = () => {
+      song.stop();
+    }
+
     const setupParameters = (radius = 15) => {
-      poissonWidth = 500;
+      poissonWidth = 300;
       innerRadius = radius;
       outerRadius = innerRadius * 10;
       let p = new PoissonDiskSampling({
@@ -50,31 +55,32 @@ class App extends React.Component {
     };
 
     p.preload = () => {
-      song = p.loadSound("/assets/mp3/foyer.20201025.mp3");
+      song = p.loadSound("/assets/mp3/patterns.202006.mp3");
     };
 
     p.setup = () => {
+      console.log("Setup")
       p.frameRate(60);
       const wrapper = document.querySelector("#logo-canvas-wrapper");
       const size = wrapper.getBoundingClientRect();
       canvas = p.createCanvas(size.width, size.height);
-      canvas.parent("logo-canvas-wrapper");
+      canvas.parent(wrapper)
       brandColor = p.color(50, 48, 69);
       backgroundColor = p.color(221, 219, 218);
       setupParameters(10);
       // Analysis
-      const binSize = 1024;
+      const binSize = 64;
       fft = new p5.FFT(0.0, binSize);
-      fft.setInput(song);
-      song.play();
       fft.smooth(0.75);
       sizeX = p.width / 2 / binSize;
       octaveBands = fft.getOctaveBands(1);
+      fft.setInput(song);
+      song.play();
     };
 
     p.draw = () => {
       // Fade in
-      fadeIn = 1.0;
+      fadeIn = p.frameCount / 100;
       var dotColor = p.lerpColor(backgroundColor, brandColor, fadeIn);
       // Breathing
       let time = p.frameCount / 30.0;
@@ -133,7 +139,6 @@ class App extends React.Component {
           point[0] - poissonWidth / 2,
           point[1] - poissonWidth / 2
         );
-
         //// Poisson points
         p.noStroke();
         let circleRadius = p.map(
@@ -144,11 +149,7 @@ class App extends React.Component {
           innerRadius
         );
         p.fill(
-          p.lerpColor(
-            dotColor,
-            p.color(241, 239, 238),
-            255 - circleRadius * 255
-          )
+          p.lerpColor(dotColor, backgroundColor, 255 - circleRadius * 255)
         );
         p.circle(
           point[0] - poissonWidth / 2,
@@ -163,25 +164,43 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.sketch = new p5(this.Sketch, this.sketchRef.current);
+    console.log("Component Did Mount")
+    if (this.props.entered === false) {
+      return
+    }
+    if (this.sketch === undefined) {
+      this.sketch = new p5(this.Sketch, this.sketchRef.current);
+    }
   }
 
   render() {
     return (
-      <div>
-        <div className="ui">
-          <button className="button" id="button-song">
-            Song
+      <>
+        <main onClick={() => {
+                this.props.onEnter();
+              }} className="logo-main">
+          <div
+            ref={this.sketchRef}
+            id="logo-canvas-wrapper"
+            data-song="mp3/foyer.20201025.mp3"
+          ></div>
+        </main>
+        <nav>
+          <button onClick={() => {
+                    this.sketch.stopAudio();
+                    this.sketch.remove();
+                    this.props.onBack();
+                  }}>
+            Zurück
           </button>
-          <button className="button" id="button-mic">
-            Mic
-          </button>
-        </div>
-        <div id="logo-canvas-wrapper" data-song="mp3/foyer.20201025.mp3"></div>
-        <div ref={this.sketchRef}></div>
-      </div>
+          {/* <button id="button-song">Song</button> */}
+          {/* <button id="button-mic">Mic</button> */}
+        </nav>
+      </>
     );
   }
 }
 
-ReactDOM.render(<App />, document.querySelector("#mount"));
+export default App;
+
+// ReactDOM.render(<App />, document.querySelector("#mount"));

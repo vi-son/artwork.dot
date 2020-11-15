@@ -89,7 +89,12 @@ module.exports = env => {
         path.resolve(`${__dirname}/assets/svg/favicon.svg`)
       ),
       new CopyPlugin({
-        patterns: [{ from: path.resolve(__dirname, "assets"), to: "assets" }]
+        patterns: [
+          {
+            from: path.resolve(__dirname, "src.exhibitions/logo/assets/"),
+            to: "assets/"
+          }
+        ]
       })
     ]
   };
