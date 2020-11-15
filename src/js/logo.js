@@ -192,6 +192,7 @@ class Logo extends React.Component {
         </main>
         <nav>
           <button
+            className="btn-back"
             onClick={() => {
               this.sketch.stopAudio();
               this.sketch.remove();
