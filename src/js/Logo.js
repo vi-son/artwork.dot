@@ -57,7 +57,7 @@ class Logo extends React.Component {
     };
 
     p.preload = () => {
-      song = p.loadSound("/assets/mp3/patterns.202006.mp3");
+      song = p.loadSound("/assets/mp3/logo.exhibition.20201121.mp3");
     };
 
     p.setup = () => {
