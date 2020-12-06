@@ -91,7 +91,7 @@ module.exports = env => {
       new CopyPlugin({
         patterns: [
           {
-            from: path.resolve(__dirname, "src.exhibitions/logo/assets/"),
+            from: "assets/",
             to: "assets/"
           }
         ]

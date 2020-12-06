@@ -3,6 +3,7 @@ import React, { createRef } from "react";
 import ReactDOM from "react-dom";
 import p5 from "p5";
 import PoissonDiskSampling from "poisson-disk-sampling";
+import dat from "dat.gui";
 // Local imports
 import "../p5/p5.sound.min.js";
 // Style imports
@@ -12,6 +13,32 @@ class Logo extends React.Component {
   constructor(props) {
     super(props);
     this.sketchRef = createRef();
+    this.onFileUpload = this.onFileUpload.bind(this);
+    this.state = {
+      selection: undefined
+    };
+    const gui = new dat.GUI();
+    const settings = {
+      radius: 15,
+      binSize: 3
+    };
+    gui
+      .add(settings, "radius")
+      .min(5)
+      .max(20)
+      .step(1)
+      .onChange(v => {
+        this.sketch.radius = v;
+        this.sketch.setupParameters(v);
+      });
+    gui
+      .add(settings, "binSize")
+      .min(1)
+      .max(10)
+      .step(1)
+      .onChange(v => {
+        this.sketch.setupFFT(Math.pow(2, 4 + v));
+      });
   }
 
   Sketch(p) {
@@ -39,21 +66,53 @@ class Logo extends React.Component {
 
     let song;
 
+    p.switchToMic = () => {
+      song.pause();
+      if (song !== undefined) song.stop();
+      mic = new p5.AudioIn();
+      mic.start();
+      fft.setInput(mic);
+    };
+
+    p.switchToSong = () => {
+      if (mic !== undefined) mic.stop();
+      song.play();
+      fft.setInput(song);
+    };
+
     p.stopAudio = () => {
       song.stop();
     };
 
+    const stopSong = () => {
+      song.stop();
+    };
+
+    const loadSong = buffer => {
+      song = buffer;
+      song.play();
+    };
+
     const setupParameters = (radius = 15) => {
-      poissonWidth = 300;
+      circleCenterRadius = radius;
+      poissonWidth = 30 * radius;
       innerRadius = radius;
       outerRadius = innerRadius * 10;
       let p = new PoissonDiskSampling({
         shape: [poissonWidth, poissonWidth],
         minDistance: innerRadius,
         maxDistance: outerRadius,
-        tries: 5
+        tries: 3
       });
       points = p.fill();
+    };
+
+    const setupFFT = (binSize = 32) => {
+      // Analysis
+      fft = new p5.FFT(0.0, binSize);
+      fft.smooth(0.75);
+      octaveBands = fft.getOctaveBands(1);
+      fft.setInput(song);
     };
 
     p.preload = () => {
@@ -62,22 +121,15 @@ class Logo extends React.Component {
 
     p.setup = () => {
       console.log("Setup");
-      p.frameRate(60);
+      p.frameRate(30);
       const wrapper = document.querySelector("#logo-canvas-wrapper");
       const size = wrapper.getBoundingClientRect();
       canvas = p.createCanvas(size.width, size.height);
       canvas.parent(wrapper);
       brandColor = p.color(50, 48, 69);
-      backgroundColor = p.color(221, 219, 218);
+      backgroundColor = p.color(215, 128, 162);
       setupParameters(10);
-      // Analysis
-      const binSize = 64;
-      fft = new p5.FFT(0.0, binSize);
-      fft.smooth(0.75);
-      sizeX = p.width / 2 / binSize;
-      octaveBands = fft.getOctaveBands(1);
-      fft.setInput(song);
-      song.play();
+      setupFFT(32);
     };
 
     p.draw = () => {
@@ -163,6 +215,11 @@ class Logo extends React.Component {
       p.fill(dotColor);
       p.circle(0, 0, invBreathe + circleCenterRadius);
     };
+
+    p.setupParameters = setupParameters;
+    p.stopSong = stopSong;
+    p.loadSong = loadSong;
+    p.setupFFT = setupFFT;
   }
 
   componentDidMount() {
@@ -175,32 +232,50 @@ class Logo extends React.Component {
     }
   }
 
+  onFileUpload(e) {
+    const fileReader = new FileReader();
+    const lastFile = e.target.files[e.target.files.length - 1];
+    fileReader.readAsDataURL(lastFile);
+    this.sketch.stopSong();
+    fileReader.addEventListener("load", () => {
+      this.sketch.loadSong(fileReader.result);
+    });
+  }
+
   render() {
     return (
       <>
-        <main
-          onClick={() => {
-            this.props.onEnter();
-          }}
-          className="logo-main"
-        >
+        <main className="logo-main">
           <div
             ref={this.sketchRef}
             id="logo-canvas-wrapper"
             data-song="mp3/foyer.20201025.mp3"
           ></div>
         </main>
-        <nav>
+        <nav className="ui">
           <button
-            className="btn-back"
+            className={[
+              "btn-song",
+              this.state.selection === "song" ? "active" : ""
+            ].join(" ")}
             onClick={() => {
-              this.sketch.stopAudio();
-              this.sketch.remove();
-              this.props.onBack();
+              this.sketch.switchToSong();
             }}
           >
-            Zurück
+            Song
           </button>
+          <button
+            className={[
+              "btn-mic",
+              this.state.selection === "mic" ? "active" : ""
+            ].join(" ")}
+            onClick={() => {
+              this.sketch.switchToMic();
+            }}
+          >
+            Microfon
+          </button>
+          <input type="file" onChange={this.onFileUpload} />
         </nav>
       </>
     );
