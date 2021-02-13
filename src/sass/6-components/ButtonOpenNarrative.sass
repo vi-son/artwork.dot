@@ -1,0 +1,24 @@
+@import @vi-son/rouge/1-settings/_colors.sass
+@import @vi-son/rouge/1-settings/_breakpoints.sass
+@import @vi-son/rouge/2-tools/_media-queries.sass
+  
+.btn-open-narrative
+  position: fixed
+  right: 60px
+  bottom: 60px
+  border-radius: 60px
+  width: 100px
+  height: 100px
+  display: flex
+  justify-content: center
+  align-items: center
+  padding: 0
+  transition: background 1s ease
+  &:hover
+    background: var(--color-curacao)
+  +until($tablets)
+    width: 50px
+    height: 50px
+    font-size: 2rem
+    top: 0
+    right: 10px
