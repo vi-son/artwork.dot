@@ -5,7 +5,7 @@
   "main": "src/js/index.js",
   "scripts": {
     "dev": "npx webpack-dev-server --open --hot --mode development --env.NODE_ENV=development",
-    "build": "npx webpack-dev-server --open --hot --mode development --env.NODE_ENV=development"
+    "build": "npx webpack --config webpack.production.js --env.production --env.NODE_ENV=production --progress"
   },
   "repository": {
     "type": "git",
@@ -51,8 +51,5 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.11.0",
     "workbox-webpack-plugin": "^5.1.4"
-  },
-  "dependencies": {
-    "@vi.son/rouge": "file:../rouge"
   }
 }
