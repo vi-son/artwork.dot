@@ -1,3 +1,6 @@
+@import @vi-son/rouge/1-settings/_colors.sass
+@import @vi-son/rouge/1-settings/_breakpoints.sass
+@import @vi-son/rouge/2-tools/_media-queries.sass
 
 #logo-canvas-wrapper
   width: 100vw
@@ -12,13 +15,15 @@
 
 .ui
   position: fixed
-  top: 15px
-  left: 15px
+  top: 20px
+  left: 20px
   z-index: 999
   width: auto
   display: grid
   grid-template-columns: 1fr
   grid-gap: 5px
+  +until($tablets)
+    grid-template-columns: repeat(3, 1fr)
   .btn-song,
   .btn-mic,
   .btn-file
@@ -32,9 +37,14 @@
     display: flex
     justify-content: center
     align-items: center
-    &.active
-      border-bottom: 5px solid var(--color-curacao)
     &:hover
+      background: var(--color-curacao)
+    +until($tablets)
+      width: 60px
+      height: 60px
+      font-size: 2rem
+      top: 0
+    &.active
       background: var(--color-curacao)
 
 .dg
