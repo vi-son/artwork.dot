@@ -1,4 +1,6 @@
 @import @vi-son/rouge/1-settings/_colors.sass
+@import @vi-son/rouge/1-settings/_breakpoints.sass
+@import @vi-son/rouge/2-tools/_media-queries.sass
 
 .btn-to-exhibition
   position: fixed
@@ -28,5 +30,6 @@
   .description
     margin-right: 20px
     margin-left: 20px
-    transform: translateY(100px)
-    transition: transform 100ms ease
+    +from($desktops)
+      transform: translateY(100px)
+      transition: transform 100ms ease

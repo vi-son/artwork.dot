@@ -9,6 +9,12 @@ import "../p5/p5.sound.min.js";
 // Style imports
 import "../../sass/6-components/Dot.sass";
 
+const selectionType = {
+  SONG: "song",
+  MIC: "mic",
+  FILE: "file",
+};
+
 class Dot extends React.Component {
   constructor(props) {
     super(props);
@@ -17,6 +23,7 @@ class Dot extends React.Component {
     this.state = {
       selection: undefined,
     };
+    /*
     const gui = new dat.GUI();
     const settings = {
       radius: 15,
@@ -39,6 +46,7 @@ class Dot extends React.Component {
       .onChange((v) => {
         this.sketch.setupFFT(Math.pow(2, 4 + v));
       });
+    */
   }
 
   Sketch(p) {
@@ -89,7 +97,10 @@ class Dot extends React.Component {
     };
 
     const loadSong = (buffer) => {
-      song = buffer;
+      song = p.loadSound(buffer, soundReady, null, null);
+    };
+
+    const soundReady = () => {
       song.play();
     };
 
@@ -262,26 +273,51 @@ class Dot extends React.Component {
           <button
             className={[
               "btn-song",
-              this.state.selection === "song" ? "active" : "",
-            ].join(" ")}
+              this.state.selection === selectionType.SONG ? "active" : "",
+            ]
+              .join(" ")
+              .trim()}
             onClick={() => {
               this.sketch.switchToSong();
+              this.setState({ selection: selectionType.SONG });
             }}
           >
-            Song
+            <span className="emoji">🎵</span>
           </button>
           <button
             className={[
               "btn-mic",
-              this.state.selection === "mic" ? "active" : "",
-            ].join(" ")}
+              this.state.selection === selectionType.MIC ? "active" : "",
+            ]
+              .join(" ")
+              .trim()}
             onClick={() => {
               this.sketch.switchToMic();
+              this.setState({ selection: selectionType.MIC });
             }}
           >
-            Microfon
+            <span className="emoji">🎤</span>
           </button>
-          {/* <input type="file" onChange={this.onFileUpload} /> */}
+          <label
+            htmlFor="upload"
+            className={[
+              "btn-file",
+              this.state.selection === selectionType.FILE ? "active" : "",
+            ]
+              .join(" ")
+              .trim()}
+          >
+            <span className="emoji">📁</span>
+          </label>
+          <input
+            id="upload"
+            type="file"
+            onChange={(e) => {
+              this.setState({ selection: selectionType.FILE });
+              this.onFileUpload(e);
+            }}
+            style={{ display: "none" }}
+          />
         </nav>
       </>
     );

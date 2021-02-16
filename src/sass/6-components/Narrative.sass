@@ -22,9 +22,11 @@ $padding-s: 30px
     overflow-y: scroll
     height: auto
   &.hidden
+    display: none
     transform: translateX(100vw)
     transition: transform 0.5s 0.1s ease
   &.visible
+    display: inline
     transform: translateX(0)
 
   +until($tablets)

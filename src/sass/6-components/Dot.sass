@@ -1,35 +1,3 @@
-$font-root: "@vi.son/rouge/fonts"
-
-/* 1. Settings - variables, config-switches
-@import @vi.son/rouge/1-settings/_colors.sass
-@import @vi.son/rouge/1-settings/_fonts.sass
-@import @vi.son/rouge/1-settings/_variables.sass
-@import @vi.son/rouge/1-settings/_breakpoints.sass
-@import @vi.son/rouge/1-settings/_typograhpy.sass
-
-/*** 2. Tools - mixins and functions
-@import @vi.son/rouge/2-tools/_responsive-font-size.sass
-@import @vi.son/rouge/2-tools/_media-queries.sass
-
-/* 3. Generic - ground-zero styling (normalize, reset)
-@import @vi.son/rouge/3-generic/_reset.sass
-
-/* 4. Base - unclassed HTML element styles
-@import @vi.son/rouge/4-base/_button.sass
-@import @vi.son/rouge/4-base/_document.sass
-@import @vi.son/rouge/4-base/_headings.sass
-@import @vi.son/rouge/4-base/_images.sass
-@import @vi.son/rouge/4-base/_input.range.sass
-@import @vi.son/rouge/4-base/_input.text.sass
-@import @vi.son/rouge/4-base/_input.text.sass
-@import @vi.son/rouge/4-base/_links.sass
-@import @vi.son/rouge/4-base/_text.sass
-
-/* 5. Objects - cosmetic-free design patterns
-@import @vi.son/rouge/5-objects/_button.send.sass
-@import @vi.son/rouge/5-objects/_btn.sass
-@import @vi.son/rouge/5-objects/_emoji.sass
-
 
 #logo-canvas-wrapper
   width: 100vw
@@ -37,29 +5,37 @@ $font-root: "@vi.son/rouge/fonts"
   position: fixed
   top: 0
   left: 0
-  background: rgb(221, 219, 218)
+  background: var(--color-ultradark)
+  opacity: 0
+  animation: fadeIn 2s 1s ease
+  animation-fill-mode: forwards
 
 .ui
   position: fixed
-  top: 30px
-  left: 30px
+  top: 15px
+  left: 15px
   z-index: 999
   width: auto
-  display: flex
-  flex-direction: column
-  .button
-    width: 6vw
-    margin-right: 10px
+  display: grid
+  grid-template-columns: 1fr
+  grid-gap: 5px
+  .btn-song,
+  .btn-mic,
+  .btn-file
     border: 0
-    background: black
-    color: white
-    font-family: monospace
-    padding: 20px
-    font-size: 16px
-    cursor: pointer
+    margin: 0
+    width: 100px
+    height: 100px
     border-radius: 4px
+    background: var(--color-snow)
+    cursor: pointer
+    display: flex
+    justify-content: center
+    align-items: center
+    &.active
+      border-bottom: 5px solid var(--color-curacao)
     &:hover
-      background: hsl(246, 100%, 54%)
+      background: var(--color-curacao)
 
 .dg
   &.ac
