@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { Narrative } from "@vi.son/components";
+import { ButtonCloseNarrative } from "@vi.son/components";
+import { ButtonOpenNarrative } from "@vi.son/components";
+import { ButtonToExhibition } from "@vi.son/components";
 // Local imports
 import { get } from "./api.js";
-import Narrative from "./components/Narrative.js";
 import Dot from "./artwork/Dot.js";
-import ButtonCloseNarrative from "./components/ButtonCloseNarrative.js";
-import ButtonOpenNarrative from "./components/ButtonOpenNarrative.js";
-import ButtonToExhibition from "./components/ButtonToExhibition.js";
 // Style imports
 import "../sass/index.sass";
 
@@ -37,7 +37,11 @@ const Artwork = () => {
         showNarrative={showNarrative}
         setShowNarrative={setShowNarrative}
       />
-      <Narrative show={showNarrative} content={content} />
+      <Narrative
+        show={showNarrative}
+        content={content}
+        version={process.env.VERSION}
+      />
     </>
   );
 };
