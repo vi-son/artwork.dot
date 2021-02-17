@@ -18,7 +18,7 @@ const Artwork = () => {
     console.group("Version");
     console.log(process.env.VERSION);
     console.groupEnd();
-    get(`/pages/logo`).then((d) => {
+    get(`/pages/dot`).then((d) => {
       setContent(d.content);
     });
   }, []);
