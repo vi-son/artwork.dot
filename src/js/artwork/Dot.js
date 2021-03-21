@@ -4,6 +4,9 @@ import ReactDOM from "react-dom";
 import p5 from "p5";
 import PoissonDiskSampling from "poisson-disk-sampling";
 import dat from "dat.gui";
+import { Kontrol } from "@vi.son/components";
+import { utils } from "@vi.son/components";
+console.log(utils);
 // Local imports
 import "../p5/p5.sound.min.js";
 // Style imports
@@ -47,6 +50,40 @@ class Dot extends React.Component {
         this.sketch.setupFFT(Math.pow(2, 4 + v));
       });
     */
+
+    this._kontrolConfig = {
+      microphone: {
+        icon: "🎤",
+        type: "button",
+        label: "mikrofon",
+        action: () => {
+          this.sketch.switchToMic();
+          this.setState({ selection: selectionType.MIC });
+        },
+      },
+      song: {
+        icon: "🎵",
+        type: "button",
+        label: "song",
+        action: () => {
+          this.sketch.switchToSong();
+          this.setState({ selection: selectionType.SONG });
+        },
+      },
+      file: {
+        icon: "📁",
+        type: "file",
+        label: "datei",
+        action: this.onFileUpload,
+      },
+      fullscreen: {
+        icon: "🔎",
+        hidden: utils.mobileCheck(),
+        type: "button",
+        label: "vollbild",
+        action: () => utils.requestFullscreen(document.querySelector("canvas")),
+      },
+    };
   }
 
   Sketch(p) {
@@ -73,10 +110,11 @@ class Dot extends React.Component {
     let octaveBands;
 
     let song;
+    let file;
 
     p.switchToMic = () => {
-      song.pause();
       if (song !== undefined) song.stop();
+      if (file !== undefined) file.stop();
       mic = new p5.AudioIn();
       mic.start();
       fft.setInput(mic);
@@ -84,8 +122,16 @@ class Dot extends React.Component {
 
     p.switchToSong = () => {
       if (mic !== undefined) mic.stop();
+      if (file !== undefined) song.stop();
       song.play();
       fft.setInput(song);
+    };
+
+    p.switchToFile = () => {
+      if (mic !== undefined) mic.stop();
+      if (song !== undefined) song.stop();
+      file.play();
+      fft.setInput(file);
     };
 
     p.stopAudio = () => {
@@ -100,8 +146,17 @@ class Dot extends React.Component {
       song = p.loadSound(buffer, soundReady, null, null);
     };
 
+    const loadSongFromFile = (buffer) => {
+      if (file !== undefined) file.stop();
+      file = p.loadSound(buffer, fileReady, null, null);
+    };
+
     const soundReady = () => {
       song.play();
+    };
+
+    const fileReady = () => {
+      p.switchToFile();
     };
 
     const setupParameters = (radius = 15) => {
@@ -204,7 +259,7 @@ class Dot extends React.Component {
           point[0] - poissonWidth / 2,
           point[1] - poissonWidth / 2
         );
-        //// Poisson points
+        // Poisson points
         p.noStroke();
         let circleRadius = p.map(
           0.5 - distancePointToWavePoint / waveRadius,
@@ -236,6 +291,7 @@ class Dot extends React.Component {
     p.setupParameters = setupParameters;
     p.stopSong = stopSong;
     p.loadSong = loadSong;
+    p.loadSongFromFile = loadSongFromFile;
     p.setupFFT = setupFFT;
   }
 
@@ -255,7 +311,7 @@ class Dot extends React.Component {
     fileReader.readAsDataURL(lastFile);
     this.sketch.stopSong();
     fileReader.addEventListener("load", () => {
-      this.sketch.loadSong(fileReader.result);
+      this.sketch.loadSongFromFile(fileReader.result);
     });
   }
 
@@ -267,57 +323,10 @@ class Dot extends React.Component {
             ref={this.sketchRef}
             id="logo-canvas-wrapper"
             data-song="mp3/foyer.20201025.mp3"
-          ></div>
+          />
         </main>
         <nav className="ui">
-          <button
-            className={[
-              "btn-song",
-              this.state.selection === selectionType.SONG ? "active" : "",
-            ]
-              .join(" ")
-              .trim()}
-            onClick={() => {
-              this.sketch.switchToSong();
-              this.setState({ selection: selectionType.SONG });
-            }}
-          >
-            <span className="emoji">🎵</span>
-          </button>
-          <button
-            className={[
-              "btn-mic",
-              this.state.selection === selectionType.MIC ? "active" : "",
-            ]
-              .join(" ")
-              .trim()}
-            onClick={() => {
-              this.sketch.switchToMic();
-              this.setState({ selection: selectionType.MIC });
-            }}
-          >
-            <span className="emoji">🎤</span>
-          </button>
-          <label
-            htmlFor="upload"
-            className={[
-              "btn-file",
-              this.state.selection === selectionType.FILE ? "active" : "",
-            ]
-              .join(" ")
-              .trim()}
-          >
-            <span className="emoji">📁</span>
-          </label>
-          <input
-            id="upload"
-            type="file"
-            onChange={(e) => {
-              this.setState({ selection: selectionType.FILE });
-              this.onFileUpload(e);
-            }}
-            style={{ display: "none" }}
-          />
+          <Kontrol config={this._kontrolConfig} />
         </nav>
       </>
     );

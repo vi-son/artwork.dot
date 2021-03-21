@@ -24,28 +24,6 @@
   grid-gap: 5px
   +until($tablets)
     grid-template-columns: repeat(3, 1fr)
-  .btn-song,
-  .btn-mic,
-  .btn-file
-    border: 0
-    margin: 0
-    width: 100px
-    height: 100px
-    border-radius: 4px
-    background: var(--color-snow)
-    cursor: pointer
-    display: flex
-    justify-content: center
-    align-items: center
-    &:hover
-      background: var(--color-curacao)
-    +until($tablets)
-      width: 60px
-      height: 60px
-      font-size: 2rem
-      top: 0
-    &.active
-      background: var(--color-curacao)
 
 .dg
   &.ac
@@ -53,3 +31,12 @@
   &.main
     input
       font-size: 1.0rem
+
+.layout-main
+  .btn-open-narrative
+    position: fixed
+    bottom: 60px
+    left: calc(100vw - 200px)
+    +until($desktops)
+      top: 0px
+      left: calc(100vw - 60px - 30px)

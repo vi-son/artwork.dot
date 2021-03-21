@@ -1,12 +1,12 @@
-const shell = require("shelljs");
+const CopyPlugin = require("copy-webpack-plugin");
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 const fs = require("fs");
 const package = require("./package.json");
 const path = require("path");
+const shell = require("shelljs");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-const WorkboxPlugin = require("workbox-webpack-plugin");
-const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 function getVersionFromGit() {
   const gitTag = shell.exec("git describe --abbrev=0 --tags");
@@ -25,6 +25,8 @@ module.exports = (env) => {
     mode: "development",
     devServer: {
       port: 8888,
+      host: "0.0.0.0",
+      useLocalIp: true,
       historyApiFallback: true,
     },
     entry: {
