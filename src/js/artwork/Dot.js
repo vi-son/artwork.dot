@@ -26,30 +26,6 @@ class Dot extends React.Component {
     this.state = {
       selection: undefined,
     };
-    /*
-    const gui = new dat.GUI();
-    const settings = {
-      radius: 15,
-      binSize: 3,
-    };
-    gui
-      .add(settings, "radius")
-      .min(5)
-      .max(20)
-      .step(1)
-      .onChange((v) => {
-        this.sketch.radius = v;
-        this.sketch.setupParameters(v);
-      });
-    gui
-      .add(settings, "binSize")
-      .min(1)
-      .max(10)
-      .step(1)
-      .onChange((v) => {
-        this.sketch.setupFFT(Math.pow(2, 4 + v));
-      });
-    */
 
     this._kontrolConfig = {
       microphone: {

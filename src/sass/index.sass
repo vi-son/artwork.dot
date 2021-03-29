@@ -31,5 +31,19 @@ $font-root: "@vi.son/rouge/fonts"
 @import @vi.son/rouge/5-objects/_button.send.sass
 @import @vi.son/rouge/5-objects/_btn.sass
 @import @vi.son/rouge/5-objects/_emoji.sass
+
 // Local
 @import ./5-objects/_canvas-wrapper.sass
+
+.layout-main
+  .btn-open-narrative
+    position: fixed
+    bottom: 60px
+    left: calc(100vw - 200px)
+    pointer-events: all
+    +until($desktops)
+      top: 0px
+      left: calc(100vw - 60px - 30px)
+
+  .btn-to-exhibition
+    pointer-events: all
