@@ -1,3 +1,5 @@
+[![CI](https://github.com/vi-son/artwork.dot/actions/workflows/deploy.yml/badge.svg)](https://github.com/vi-son/artwork.dot/actions/workflows/deploy.yml)
+
 # [vi.son — mixing-senses](https://mixing-senses.art/de)
 ### Artwork "Dot"
 
