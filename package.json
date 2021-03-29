@@ -1,6 +1,6 @@
 {
   "name": "artwort.dot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "audioreactive logo artwork for vi.son - mixing senses",
   "main": "src/js/index.js",
   "scripts": {
