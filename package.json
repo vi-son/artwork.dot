@@ -23,7 +23,7 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.5",
     "@tweenjs/tween.js": "^18.6.4",
-    "@vi.son/components": "^0.0.8",
+    "@vi.son/components": "^0.0.9",
     "@vi.son/rouge": "^1.0.5",
     "babel-loader": "^8.2.2",
     "blueimp-md5": "^2.18.0",
